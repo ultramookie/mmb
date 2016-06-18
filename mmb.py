@@ -8,7 +8,7 @@ import os
 import re
 import jinja2
 import shutil
-import pprint
+import time
 
 # Get me my config values!
 def read_config(input_dir):
@@ -82,11 +82,40 @@ def process_entries(input_dir,config):
       if os.path.isfile(html_filename):
         open(done_filename,'a').close()
 
+# Let people find their way around
+def create_index_page(input_dir,config):
+  index_filename = config['output'] + '/index.html'
+  blog_name = config['blog_name']
+  year = time.strftime("%Y")
+  month = time.strftime("%m")
+  day = time.strftime("%d")
+  metadata = [year,month,day,blog_name]
+  output_dir = config['output']
+  header_template = open(config['header_file']).read()
+  footer_template = open(config['footer_file']).read()
+  header_html = render_jinja(header_template,metadata,config)
+  footer_html = render_jinja(footer_template,metadata,config)
+  entry_files = sorted(glob.glob(input_dir + '/*.md'))
+  index_filecontents = header_html
+  for entry_file in entry_files:
+    base_filename = os.path.splitext(entry_file)[0]
+    metadata = get_meta_data(base_filename)
+    path,filename = os.path.split(base_filename)
+    html_filename = filename + '.html'
+    date = get_date(metadata)
+    title = get_title(metadata).title()
+    index_filecontents = '%s <a href="%s">%s</a> (%s) <br />' % (index_filecontents,html_filename,title,date)
+  index_filecontents = index_filecontents + footer_html
+  index_file = open(index_filename,'w')
+  index_file.write(index_filecontents)
+  index_file.close()
+
 # Go Speed Go
 def run():
   input_dir = get_input_dir()
   config = read_config(input_dir)
   copy_style(config)
   process_entries(input_dir,config)
+  create_index_page(input_dir,config)
 
 run()
