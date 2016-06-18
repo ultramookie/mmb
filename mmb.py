@@ -6,6 +6,7 @@ import optparse
 import glob
 import os
 import re
+import jinja2
 import pprint
 
 # Get me my config values!
@@ -33,16 +34,19 @@ def get_meta_data(base_filename):
   filename_split = re.split('-', filename)
   return filename_split
 
-def create_header():
-  
+def create_header(header_template):
+  print header_template
+
 # Do the doing
 def process_entries(input_dir,config):
+  header_template = open(config['header_file']).read()
   footer = open(config['footer_file']).read()
   entry_files = sorted(glob.glob(input_dir + '/*.md'))
   for entry_file in entry_files:
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
     if not os.path.isfile(base_filename + '.done'):
+      header_html = create_header(header_template)
       body_html = read_body(entry_file)
       html_doc = body_html + footer
       print html_doc
