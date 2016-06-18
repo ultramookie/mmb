@@ -1,10 +1,10 @@
 {
-  "output":       "/tmp/out",
-  "base_url":     "http://hellomookie.com",
-  "url_location": "/tmp/",
-  "header_file":  "/tmp/in/header.jinja",
-  "css_file":     "/tmp/in/style.css",
-  "footer_file":  "/tmp/in/footer.html",
-  "blog_name":    "Test Blog",
-  "meta":         "test,blog,mookie"
+  "output":         "/tmp/out",
+  "base_url":       "http://hellomookie.com",
+  "url_location":   "/tmp/",
+  "header_file":    "/tmp/in/header.jinja",
+  "footer_file":    "/tmp/in/footer.jinja",
+  "css_file":       "/tmp/in/style.css",
+  "blog_name":      "Test Blog",
+  "meta_keywords":  "test,blog,mookie"
 }
