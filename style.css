@@ -1,0 +1,36 @@
+body {
+  font-family: "Verdana", Sans;
+  color:#000000;
+  background:#FFFFFF; 
+  min-width: 300px;
+  max-width: 575px;
+  width: auto;
+}
+
+a {
+  color:#FC7901;
+  background:inherit;
+  text-decoration:none;
+}
+
+a:hover {
+  color:#FC7901;
+  background:#FFCC33;
+  text-decoration:none;
+}
+
+h1 { 
+  font-size: large; 
+  background:#F0F0F0;
+}
+
+h2 { 
+  font-size: medium; 
+  background:#F0F0F0;
+}
+
+hr {
+  height: 1px;
+  color: #c0c0c0;
+}
+
