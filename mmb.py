@@ -34,7 +34,19 @@ def get_meta_data(base_filename):
   filename_split = re.split('-', filename)
   return filename_split
 
-def create_header(header_template):
+def get_date(metadata):
+  date = '-'.join(metadata[0:3])
+  return date
+
+def get_title(metadata):
+  title = ' '.join(metadata[3:])
+  return title
+
+def create_header(header_template,metadata):
+  date = get_date(metadata)
+  title = get_title(metadata)
+  print date
+  print title
   print header_template
 
 # Do the doing
@@ -46,7 +58,7 @@ def process_entries(input_dir,config):
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
     if not os.path.isfile(base_filename + '.done'):
-      header_html = create_header(header_template)
+      header_html = create_header(header_template,metadata)
       body_html = read_body(entry_file)
       html_doc = body_html + footer
       print html_doc
