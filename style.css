@@ -1,12 +1,20 @@
-body {
-  font-family: "Verdana", Sans;
+body,
+html {
+  margin:5px;
+  padding:10px;
+  background:#FFFFFF;
   color:#000000;
-  background:#FFFFFF; 
-  min-width: 300px;
-  max-width: 575px;
-  width: auto;
+  font-family: "Verdana", Sans;
+  width: 500px;
 }
 
+body {
+  font-size: small;
+  font-family: "Helvetica","Verdana", "Arial", Sans;
+  border-top: 6px solid #000000;
+  border-bottom: 6px solid #000000;
+  width: 500px;
+}
 a {
   color:#FC7901;
   background:inherit;
@@ -26,7 +34,6 @@ h1 {
 
 h2 { 
   font-size: medium; 
-  background:#F0F0F0;
 }
 
 hr {

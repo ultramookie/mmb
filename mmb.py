@@ -95,7 +95,7 @@ def create_index_page(input_dir,config):
   footer_template = open(config['footer_file']).read()
   header_html = render_jinja(header_template,metadata,config)
   footer_html = render_jinja(footer_template,metadata,config)
-  entry_files = sorted(glob.glob(input_dir + '/*.md'))
+  entry_files = sorted(glob.glob(input_dir + '/*.done'))
   index_filecontents = header_html
   for entry_file in entry_files:
     base_filename = os.path.splitext(entry_file)[0]
