@@ -1,8 +1,8 @@
 {
-  "output":       "/tmp/blog",
+  "output":       "/tmp/out",
   "base_url":     "http://hellomookie.com",
   "url_location": "/tmp/",
-  "footer_file":  "/tmp/stuff/footer.html",
+  "footer_file":  "/tmp/in/footer.html",
   "blog_name":    "Test Blog",
   "meta":         "test,blog,mookie"
 }
