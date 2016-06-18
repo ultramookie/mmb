@@ -7,6 +7,7 @@ import glob
 import os
 import re
 import jinja2
+import shutil
 import pprint
 
 # Get me my config values!
@@ -53,6 +54,12 @@ def render_jinja(incoming_template,metadata,config):
   rendered_jinja = template.render(title=title,date=date,blog_name=blog_name,meta_keywords=meta_keywords,base_url=base_url,url_location=url_location)
   return rendered_jinja
 
+def copy_style(config):
+  css_file = config['css_file'] 
+  path,filename = os.path.split(css_file)
+  dest_file = config['output'] + '/' + filename
+  shutil.copyfile(css_file,dest_file)
+
 # Do the doing
 def process_entries(input_dir,config):
   header_template = open(config['header_file']).read()
@@ -62,16 +69,24 @@ def process_entries(input_dir,config):
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
     if not os.path.isfile(base_filename + '.done'):
+      path,filename = os.path.split(base_filename)
+      html_filename = config['output'] + '/' + filename + '.html'
+      done_filename = base_filename + '.done'
       header_html = render_jinja(header_template,metadata,config)
       footer_html = render_jinja(footer_template,metadata,config)
       body_html = read_body(entry_file)
       html_doc = header_html + body_html + footer_html
-      print html_doc
+      blog_file = open(html_filename,'w')
+      blog_file.write(html_doc)
+      blog_file.close()
+      if os.path.isfile(html_filename):
+        open(done_filename,'a').close()
 
 # Go Speed Go
 def run():
   input_dir = get_input_dir()
   config = read_config(input_dir)
+  copy_style(config)
   process_entries(input_dir,config)
 
 run()

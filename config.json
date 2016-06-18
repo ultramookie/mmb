@@ -1,7 +1,7 @@
 {
-  "output":         "/tmp/out",
+  "output":         "/var/www/html",
   "base_url":       "http://hellomookie.com",
-  "url_location":   "/tmp/",
+  "url_location":   "/",
   "header_file":    "/tmp/in/header.jinja",
   "footer_file":    "/tmp/in/footer.jinja",
   "css_file":       "/tmp/in/style.css",
