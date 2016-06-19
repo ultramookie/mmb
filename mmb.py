@@ -9,14 +9,16 @@ import re
 import jinja2
 import shutil
 import feedgenerator
-import pprint
 
 # Get me my config values!
 def read_config(input_dir):
   config_location = input_dir + '/config.json'
-  with open(config_location) as config_file:    
-    config = json.load(config_file)
-  return config
+  if os.path.isfile(config_location):
+    with open(config_location) as config_file:    
+      config = json.load(config_file)
+    return config
+  else:
+    print 'config file %s is missing' % config_location
 
 # What am I trying to translate?
 def read_body(entry_file):
@@ -31,19 +33,23 @@ def get_input_dir():
   (options, args) = parser.parse_args()
   return options.input_dir
 
+# Create metadata from the markdown filename
 def get_meta_data(base_filename):
   path,filename = os.path.split(base_filename)
   filename_split = re.split('-', filename)
   return filename_split
 
+# Make the date
 def get_date(metadata):
   date = '-'.join(metadata[0:3])
   return date
 
+# Make the title
 def get_title(metadata):
   title = ' '.join(metadata[3:])
   return title
 
+# Given the jinja for header or footer, render it to html
 def render_jinja(incoming_template,metadata,config):
   date = get_date(metadata)
   title = get_title(metadata).title()
@@ -68,6 +74,7 @@ def render_jinja(incoming_template,metadata,config):
   )
   return rendered_jinja
 
+# Copy the style sheet into place
 def copy_style(config):
   css_file = config['css_file'] 
   path,filename = os.path.split(css_file)
@@ -160,7 +167,6 @@ def create_rss_feed(input_dir,config):
 
   with open(rss_filename, 'w') as rss_file:
     feed.write(rss_file, 'utf-8')
-  
 
 # Go Speed Go
 def run():
@@ -171,4 +177,5 @@ def run():
   create_index_page(input_dir,config)
   create_rss_feed(input_dir,config)
 
+# Make it so!
 run()
