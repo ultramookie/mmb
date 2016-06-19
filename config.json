@@ -1,10 +1,14 @@
 {
-  "output":         "/var/www/html",
-  "base_url":       "http://hellomookie.com",
-  "url_location":   "/",
-  "header_file":    "/tmp/in/header.jinja",
-  "footer_file":    "/tmp/in/footer.jinja",
-  "css_file":       "/tmp/in/style.css",
-  "blog_name":      "Test Blog",
-  "meta_keywords":  "test,blog,mookie"
+  "output":           "/var/www/html",
+  "base_url":         "http://hellomookie.com",
+  "url_location":     "/",
+  "header_file":      "/tmp/in/header.jinja",
+  "footer_file":      "/tmp/in/footer.jinja",
+  "css_file":         "/tmp/in/style.css",
+  "blog_name":        "Test Blog",
+  "meta_keywords":    "test,blog,mookie",
+  "author":           "steve mookie kong",
+  "meta_description": "ultramookie blog",
+  "language":         "en",
+  "feed_entries":     "2"
 }

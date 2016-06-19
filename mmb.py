@@ -8,7 +8,8 @@ import os
 import re
 import jinja2
 import shutil
-import time
+import feedgenerator
+import pprint
 
 # Get me my config values!
 def read_config(input_dir):
@@ -48,10 +49,23 @@ def render_jinja(incoming_template,metadata,config):
   title = get_title(metadata).title()
   blog_name = config['blog_name']
   meta_keywords = config['meta_keywords']
+  meta_description = config['meta_description']
+  language = config['language']
+  author = config['author']
   base_url = config['base_url']
   url_location = config['url_location']
   template = jinja2.Template(incoming_template)
-  rendered_jinja = template.render(title=title,date=date,blog_name=blog_name,meta_keywords=meta_keywords,base_url=base_url,url_location=url_location)
+  rendered_jinja = template.render(
+    title=title,
+    date=date,
+    blog_name=blog_name,
+    meta_keywords=meta_keywords,
+    meta_description=meta_description,
+    language=language,
+    base_url=base_url,
+    url_location=url_location,
+    author=author
+  )
   return rendered_jinja
 
 def copy_style(config):
@@ -81,15 +95,13 @@ def process_entries(input_dir,config):
       blog_file.close()
       if os.path.isfile(html_filename):
         open(done_filename,'a').close()
+        print '%s has been processed.' % entry_file
 
 # Let people find their way around
 def create_index_page(input_dir,config):
   index_filename = config['output'] + '/index.html'
   blog_name = config['blog_name']
-  year = time.strftime("%Y")
-  month = time.strftime("%m")
-  day = time.strftime("%d")
-  metadata = [year,month,day,blog_name]
+  metadata = ['','','',blog_name]
   output_dir = config['output']
   header_template = open(config['header_file']).read()
   footer_template = open(config['footer_file']).read()
@@ -110,6 +122,46 @@ def create_index_page(input_dir,config):
   index_file.write(index_filecontents)
   index_file.close()
 
+# Generator those fancy rss feeds
+def create_rss_feed(input_dir,config):
+  counter = 0
+  rss_filename = config['output'] + '/feed.rss'
+  blog_name = config['blog_name']
+  author = config['author']
+  language = config['language']
+  url = config['base_url'] + config['url_location']
+  meta_description = config['meta_description']
+  feed_entries = int(config['feed_entries'])
+  feed = feedgenerator.Rss201rev2Feed(
+    title=blog_name,
+    link=url,
+    description=meta_description,
+    language=language,
+    author_name=author,
+    feed_url='%sfeed.rss' % url
+  )
+  entry_files = sorted(glob.glob(input_dir + '/*.done'))
+  for entry_file in entry_files:
+    counter = counter + 1
+    if counter > feed_entries:
+      break
+    else:
+      base_filename = os.path.splitext(entry_file)[0]
+      metadata = get_meta_data(base_filename)
+      path,filename = os.path.split(base_filename)
+      html_filename = filename + '.html'
+      date = get_date(metadata)
+      title = get_title(metadata).title()
+      feed.add_item(
+        title=title,
+        link='%s%s' % (url,html_filename),
+        description=title
+      )
+
+  with open(rss_filename, 'w') as rss_file:
+    feed.write(rss_file, 'utf-8')
+  
+
 # Go Speed Go
 def run():
   input_dir = get_input_dir()
@@ -117,5 +169,6 @@ def run():
   copy_style(config)
   process_entries(input_dir,config)
   create_index_page(input_dir,config)
+  create_rss_feed(input_dir,config)
 
 run()
