@@ -4,17 +4,20 @@ html {
   padding:10px;
   background:#FFFFFF;
   color:#000000;
-  font-family: "Verdana", Sans;
+  font-family: 'Arvo', serif;
   width: 500px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 body {
-  font-size: small;
-  font-family: "Helvetica","Verdana", "Arial", Sans;
+  font-family: 'Arvo', serif;
   border-top: 6px solid #000000;
   border-bottom: 6px solid #000000;
   width: 500px;
 }
+
 a {
   color:#FC7901;
   background:inherit;
@@ -28,16 +31,21 @@ a:hover {
 }
 
 h1 { 
-  font-size: large; 
+  font-size: x-large; 
+  font-family: 'Vollkorn', serif;
   background:#F0F0F0;
 }
 
 h2 { 
   font-size: medium; 
+  font-family: 'Vollkorn', serif;
 }
 
 hr {
-  height: 1px;
-  color: #c0c0c0;
+  background-color: #fff;
+  border-top: 2px dotted #8c8b8b;
 }
 
+p.footer {
+  font-size: x-small;
+}

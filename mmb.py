@@ -85,7 +85,7 @@ def copy_style(config):
 def process_entries(input_dir,config):
   header_template = open(config['header_file']).read()
   footer_template = open(config['footer_file']).read()
-  entry_files = sorted(glob.glob(input_dir + '/*.md'))
+  entry_files = glob.glob(input_dir + '/*.md')
   for entry_file in entry_files:
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
@@ -114,7 +114,7 @@ def create_index_page(input_dir,config):
   footer_template = open(config['footer_file']).read()
   header_html = render_jinja(header_template,metadata,config)
   footer_html = render_jinja(footer_template,metadata,config)
-  entry_files = sorted(glob.glob(input_dir + '/*.done'))
+  entry_files = sorted(glob.glob(input_dir + '/*.done'), reverse=True)
   index_filecontents = header_html
   for entry_file in entry_files:
     base_filename = os.path.splitext(entry_file)[0]
@@ -144,10 +144,10 @@ def create_rss_feed(input_dir,config):
     link=url,
     description=meta_description,
     language=language,
-    author_name=author,
+    feed_guid=url,
     feed_url='%sfeed.rss' % url
   )
-  entry_files = sorted(glob.glob(input_dir + '/*.done'))
+  entry_files = sorted(glob.glob(input_dir + '/*.done'), reverse=True)
   for entry_file in entry_files:
     counter = counter + 1
     if counter > feed_entries:
@@ -162,7 +162,9 @@ def create_rss_feed(input_dir,config):
       feed.add_item(
         title=title,
         link='%s%s' % (url,html_filename),
-        description=title
+        description=title,
+        author_name=author,
+        uniq_id=html_filename
       )
 
   with open(rss_filename, 'w') as rss_file:
