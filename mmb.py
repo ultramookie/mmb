@@ -174,7 +174,8 @@ def create_rss_feed(input_dir,config):
         link='%s%s' % (url,html_filename),
         description=title,
         author_name=author,
-        unique_id='%s%s' % (url,html_filename)
+        unique_id='%s%s' % (url,html_filename),
+        unique_id_is_permalink="true"
       )
 
   with open(rss_filename, 'w') as rss_file:
