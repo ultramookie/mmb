@@ -44,6 +44,11 @@ def get_date(metadata):
   date = '-'.join(metadata[0:3])
   return date
 
+# Make the year
+def get_year(metadata):
+  year = int(metadata[0])
+  return year
+
 # Make the title
 def get_title(metadata):
   title = ' '.join(metadata[3:])
@@ -109,6 +114,7 @@ def create_index_page(input_dir,config):
   index_filename = config['output'] + '/index.html'
   author = config['author']
   metadata = ['','','',author]
+  prev_year = -1
   output_dir = config['output']
   header_template = open(config['header_file']).read()
   footer_template = open(config['footer_file']).read()
@@ -123,6 +129,10 @@ def create_index_page(input_dir,config):
     html_filename = filename + '.html'
     date = get_date(metadata)
     title = get_title(metadata).title()
+    cur_year = get_year(metadata)
+    if cur_year != prev_year:
+      index_filecontents = '%s <h1>%s</h1>' % (index_filecontents,cur_year)
+      prev_year = cur_year
     index_filecontents = '%s <a href="%s">%s</a> (%s) <br />' % (index_filecontents,html_filename,title,date)
   index_filecontents = index_filecontents + footer_html
   index_file = open(index_filename,'w')
