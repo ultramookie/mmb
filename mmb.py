@@ -107,8 +107,8 @@ def process_entries(input_dir,config):
 # Let people find their way around
 def create_index_page(input_dir,config):
   index_filename = config['output'] + '/index.html'
-  blog_name = config['blog_name']
-  metadata = ['','','',blog_name]
+  author = config['author']
+  metadata = ['','','',author]
   output_dir = config['output']
   header_template = open(config['header_file']).read()
   footer_template = open(config['footer_file']).read()
