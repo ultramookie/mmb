@@ -96,18 +96,20 @@ def process_entries(input_dir,config):
     metadata = get_meta_data(base_filename)
     if not os.path.isfile(base_filename + '.done'):
       path,filename = os.path.split(base_filename)
-      html_filename = config['output'] + '/' + filename + '.html'
-      done_filename = base_filename + '.done'
-      header_html = render_jinja(header_template,metadata,config)
-      footer_html = render_jinja(footer_template,metadata,config)
-      body_html = read_body(entry_file)
-      html_doc = header_html + body_html + footer_html
-      blog_file = open(html_filename,'w')
-      blog_file.write(html_doc)
-      blog_file.close()
-      if os.path.isfile(html_filename):
-        open(done_filename,'a').close()
-        print '%s has been processed.' % entry_file
+      filename_pattern = re.compile(r'^(\d{4})-(\d{2})-(\d{2})(-\w*)*$')
+      if (filename_pattern.match(filename)):
+        html_filename = config['output'] + '/' + filename + '.html'
+        done_filename = base_filename + '.done'
+        header_html = render_jinja(header_template,metadata,config)
+        footer_html = render_jinja(footer_template,metadata,config)
+        body_html = read_body(entry_file)
+        html_doc = header_html + body_html + footer_html
+        blog_file = open(html_filename,'w')
+        blog_file.write(html_doc)
+        blog_file.close()
+        if os.path.isfile(html_filename):
+          open(done_filename,'a').close()
+          print '%s has been processed.' % entry_file
 
 # Let people find their way around
 def create_index_page(input_dir,config):
