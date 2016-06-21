@@ -112,8 +112,8 @@ def process_entries(input_dir,config):
           print '%s has been processed.' % entry_file
 
 # Let people find their way around
-def create_index_page(input_dir,config):
-  index_filename = config['output'] + '/index.html'
+def create_archive_page(input_dir,config):
+  index_filename = config['output'] + '/archive.html'
   author = config['author']
   metadata = ['','','',author]
   prev_year = -1
@@ -189,7 +189,7 @@ def run():
   config = read_config(input_dir)
   copy_style(config)
   process_entries(input_dir,config)
-  create_index_page(input_dir,config)
+  create_archive_page(input_dir,config)
   create_rss_feed(input_dir,config)
 
 # Make it so!
