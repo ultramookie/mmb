@@ -7,9 +7,13 @@
 <meta name="description" content="{{ meta_description }}">
 <meta name="generator" content="mmb/0.1" />
 <meta name="viewport" content="width=device-width">
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:type" content="blog" />
+<meta property="og:site_name" content="{{ blog_name }}" />
 <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="alternate" type="application/atom+xml" title="{{ blog_name }}" href="feed.rss" />
 </head>
 <body>
 <h1><a href="{{ base_url }}{{url_location}}">{{ blog_name }}</a></h1>
