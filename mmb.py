@@ -105,12 +105,18 @@ def process_entries(input_dir,config):
   for entry_file in entry_files:
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
+    year = get_year(metadata)
+    output_dir = '%s/%s' % (config['output'],year)
     if not os.path.isfile(base_filename + '.done'):
       path,filename = os.path.split(base_filename)
       filename_pattern = re.compile(r'^(\d{4})-(\d{2})-(\d{2})(-\w*)*$')
       if (filename_pattern.match(filename)):
-        html_filename = config['output'] + '/' + filename + '.html'
-        done_filename = base_filename + '.done'
+        try:
+          os.stat(output_dir)
+        except:
+          os.mkdir(output_dir) 
+        html_filename = '%s/%s.html' % (output_dir,filename)
+        done_filename = '%s.done' % (base_filename)
         header_html = render_jinja(header_template,metadata,config)
         footer_html = render_jinja(footer_template,metadata,config)
         body_html = read_body(entry_file)
