@@ -89,7 +89,7 @@ def copy_style(config):
 # Copy the latest html file to be index file
 def copy_index_into_place(config):
   index_file = config['output'] + '/index.html'
-  html_files = sorted(glob.glob(config['output'] + '/*.html'), reverse=True)
+  html_files = sorted(glob.glob(config['output'] + '/*/*.html'), reverse=True)
   for html_file in html_files:
     path,filename = os.path.split(html_file)
     filename_pattern = re.compile(r'^(\d{4})-(\d{2})-(\d{2})(-\w*)*\.html$')
