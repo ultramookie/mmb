@@ -145,10 +145,10 @@ def create_archive_page(input_dir,config):
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
     path,filename = os.path.split(base_filename)
-    html_filename = filename + '.html'
     date = get_date(metadata)
     title = get_title(metadata).title()
     cur_year = get_year(metadata)
+    html_filename = '%s/%s.html' % (cur_year,filename)
     if cur_year != prev_year:
       index_filecontents = '%s <h1>%s</h1>' % (index_filecontents,cur_year)
       prev_year = cur_year
