@@ -5,6 +5,7 @@ import markdown
 import optparse
 import glob
 import os
+import sys
 import re
 import jinja2
 import shutil
@@ -19,6 +20,7 @@ def read_config(input_dir):
     return config
   else:
     print 'config file %s is missing' % config_location
+    sys.exit()
 
 # What am I trying to translate?
 def read_body(entry_file):
