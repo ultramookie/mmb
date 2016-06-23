@@ -189,13 +189,14 @@ def create_rss_feed(input_dir,config):
       path,filename = os.path.split(base_filename)
       html_filename = filename + '.html'
       date = get_date(metadata)
+      year = get_year(metadata)
       title = get_title(metadata).title()
       feed.add_item(
         title=title,
-        link='%s%s' % (url,html_filename),
+        link='%s%s/%s' % (url,year,html_filename),
         description=title,
         author_name=author,
-        unique_id='%s%s' % (url,html_filename),
+        unique_id='%s%s/%s' % (url,year,html_filename),
         unique_id_is_permalink="true"
       )
 
