@@ -106,6 +106,10 @@ def make_dir(dir):
   except:
     os.mkdir(dir)
     
+# Get completed entry files
+def get_completed_entries(input_dir):
+  return sorted(glob.glob(input_dir + '/*/*.md'), reverse=True)
+    
 # Do the doing
 def process_entries(input_dir,config):
   header_template = open(config['header_file']).read()
@@ -145,14 +149,11 @@ def create_archive_page(input_dir,config):
   footer_template = open(config['footer_file']).read()
   header_html = render_jinja(header_template,metadata,config)
   footer_html = render_jinja(footer_template,metadata,config)
-  entry_files = sorted(glob.glob(input_dir + '/*/*.md'), reverse=True)
+  entry_files = get_completed_entries(input_dir)
   index_filecontents = '%s<h1>Archive</h1>' % header_html 
   for entry_file in entry_files:
-    print entry_file
     base_filename = os.path.splitext(entry_file)[0]
-    print base_filename
     metadata = get_meta_data(base_filename)
-    print metadata
     path,filename = os.path.split(base_filename)
     date = get_date(metadata)
     title = get_title(metadata).title()
@@ -185,7 +186,7 @@ def create_rss_feed(input_dir,config):
     feed_guid=url,
     feed_url='%sfeed.rss' % url
   )
-  entry_files = sorted(glob.glob(input_dir + '/*/*.md'), reverse=True)
+  entry_files = get_completed_entries(input_dir)
   for entry_file in entry_files:
     counter = counter + 1
     if counter > feed_entries:
