@@ -99,6 +99,13 @@ def copy_index_into_place(config):
       shutil.copyfile(html_file,index_file)
       break
 
+# Create dir
+def make_dir(dir):
+  try:
+    os.stat(dir)
+  except:
+    os.mkdir(dir)
+    
 # Do the doing
 def process_entries(input_dir,config):
   header_template = open(config['header_file']).read()
@@ -108,27 +115,24 @@ def process_entries(input_dir,config):
     base_filename = os.path.splitext(entry_file)[0]
     metadata = get_meta_data(base_filename)
     year = get_year(metadata)
+    processed_dir = '%s/%s' % (input_dir,year)
     output_dir = '%s/%s' % (config['output'],year)
-    if not os.path.isfile(base_filename + '.done'):
-      path,filename = os.path.split(base_filename)
-      filename_pattern = re.compile(r'^(\d{4})-(\d{2})-(\d{2})(-\w*)*$')
-      if (filename_pattern.match(filename)):
-        try:
-          os.stat(output_dir)
-        except:
-          os.mkdir(output_dir) 
-        html_filename = '%s/%s.html' % (output_dir,filename)
-        done_filename = '%s.done' % (base_filename)
-        header_html = render_jinja(header_template,metadata,config)
-        footer_html = render_jinja(footer_template,metadata,config)
-        body_html = read_body(entry_file)
-        html_doc = header_html + body_html + footer_html
-        blog_file = open(html_filename,'w')
-        blog_file.write(html_doc)
-        blog_file.close()
-        if os.path.isfile(html_filename):
-          open(done_filename,'a').close()
-          print '%s has been processed.' % entry_file
+    path,filename = os.path.split(base_filename)
+    filename_pattern = re.compile(r'^(\d{4})-(\d{2})-(\d{2})(-\w*)*$')
+    if (filename_pattern.match(filename)):
+      make_dir(processed_dir)
+      make_dir(output_dir)
+      html_filename = '%s/%s.html' % (output_dir,filename)
+      header_html = render_jinja(header_template,metadata,config)
+      footer_html = render_jinja(footer_template,metadata,config)
+      body_html = read_body(entry_file)
+      html_doc = header_html + body_html + footer_html
+      blog_file = open(html_filename,'w')
+      blog_file.write(html_doc)
+      blog_file.close()
+      if os.path.isfile(html_filename):
+        shutil.move(entry_file,processed_dir)
+        print '%s has been processed.' % entry_file
 
 # Let people find their way around
 def create_archive_page(input_dir,config):
@@ -141,11 +145,14 @@ def create_archive_page(input_dir,config):
   footer_template = open(config['footer_file']).read()
   header_html = render_jinja(header_template,metadata,config)
   footer_html = render_jinja(footer_template,metadata,config)
-  entry_files = sorted(glob.glob(input_dir + '/*.done'), reverse=True)
+  entry_files = sorted(glob.glob(input_dir + '/*/*.md'), reverse=True)
   index_filecontents = '%s<h1>Archive</h1>' % header_html 
   for entry_file in entry_files:
+    print entry_file
     base_filename = os.path.splitext(entry_file)[0]
+    print base_filename
     metadata = get_meta_data(base_filename)
+    print metadata
     path,filename = os.path.split(base_filename)
     date = get_date(metadata)
     title = get_title(metadata).title()
@@ -178,7 +185,7 @@ def create_rss_feed(input_dir,config):
     feed_guid=url,
     feed_url='%sfeed.rss' % url
   )
-  entry_files = sorted(glob.glob(input_dir + '/*.done'), reverse=True)
+  entry_files = sorted(glob.glob(input_dir + '/*/*.md'), reverse=True)
   for entry_file in entry_files:
     counter = counter + 1
     if counter > feed_entries:
