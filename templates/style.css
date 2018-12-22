@@ -4,30 +4,25 @@ html {
   font-family: 'Arvo', serif;
 }
 
-body {
-  font-family: 'Arvo', serif;
-  width: 500px;
-}
-
 p {
     padding: 10px;
 }
 
 #wrapper {
     margin: 0 auto;
-    width: 600px;
+    min-width: 500px;
+    max-width: 600px;
 }
 
 #contentwrap {
-    width: 600;
+    min-width: 500;
+    max-width: 600;
     float: left;
     margin: 0 auto;
 }
 
 #content {
     background: #FFFFFF;
-    border-radius: 10px;
-    border: 1px solid #ebebeb;
     margin: 5px;
 }
 
